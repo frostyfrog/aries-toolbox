@@ -96,9 +96,6 @@ export default {
             if (attribute.restrictions.trusted_issuer) {
               transmuted_attr.restrictions[0].issuer_did = attribute.restrictions.trusted_issuer;
             }
-            if (transmuted_attr.restrictions.length < 1) {
-              delete transmuted_attr.restrictions;
-            }
             acc[attribute.name] = transmuted_attr;
             return acc;
           }, {}),
@@ -118,14 +115,14 @@ export default {
             if (predicate.restrictions.trusted_issuer) {
               transmuted_pred.restrictions[0].issuer_did = predicate.restrictions.trusted_issuer;
             }
-            if (transmuted_pred.restrictions.length < 1) {
-              delete transmuted_pred.restrictions;
-            }
             acc[predicate.name] = transmuted_pred;
             return acc;
           }, {}),
         },
       };
+      if (form.non_revoked) {
+        query_msg.proof_request.non_revoked = {"to": new Date().getTime()};
+      }
       this.send_message(query_msg);
     },
   },
